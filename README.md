@@ -1,1 +1,1 @@
-# CS-267
+# Spotify Recommender
