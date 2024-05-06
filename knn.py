@@ -16,10 +16,10 @@ from sklearn.neighbors import NearestNeighbors
 data_path = 'dataset.csv'
 data = pd.read_csv(data_path)
 
-# Preprocessing artist names if they are in list format in your dataset
-data['artists'] = data['artists'].apply(eval)  # Converts string lists into actual lists (if needed)
+# Preprocessing artist names if they are in list format
+data['artists'] = data['artists'].apply(eval)
 
-# Converting list of artists to a sorted, joined string for uniformity (if multiple artists)
+# Converting list of artists to a sorted, joined string for uniformity
 data['artist_str'] = data['artists'].apply(lambda x: ', '.join(sorted(x)))
 
 # Selecting the relevant features for the model
@@ -57,8 +57,8 @@ def get_recommendations(song_id, num_recommendations=10):
 
     return unique_recommendations
 
-# Example usage with a song ID from your dataset
-song_id = '54TSw5CeLFZu15srfUyWZ8'  # Replace with an actual song ID
+# Example
+song_id = '54TSw5CeLFZu15srfUyWZ8'
 recommendations = get_recommendations(song_id)
 
 print("Recommendations for the input song:")
