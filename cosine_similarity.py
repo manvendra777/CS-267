@@ -2,13 +2,14 @@ import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import MinMaxScaler
 
-spotify_data = pd.read_csv("tracks_features.csv") # load dataset
+spotify_data = pd.read_csv("tracks_features_truncated.csv") # load dataset
 
 features = ['explicit', 'danceability', 'energy', 'key', 'loudness', 'liveness', 'tempo'] # selected features for song comparision
 
 scaler = MinMaxScaler()
 spotify_data_normalized = scaler.fit_transform(spotify_data[features])
 
+# find_similar_songs() runs cosine similiarity for the input song and each song in dataset for the selected features
 def find_similar_songs(input_song_name, song_df, scaler, features):
     input_song = song_df[song_df['name'] == input_song_name].iloc[0]
     input_features = input_song[features].values.reshape(1, -1)
@@ -16,12 +17,12 @@ def find_similar_songs(input_song_name, song_df, scaler, features):
     
     similarity_scores = cosine_similarity(input_features_normalized, spotify_data_normalized) # calculate cosine similarity
     
-    similar_songs_indices = similarity_scores.argsort()[0][::-1][1:11] # return top 10 scores
+    similar_songs_indices = similarity_scores.argsort()[0][::-1][1:11] # return only top 10 scores
     similar_songs = [(song_df.iloc[i]['name'], similarity_scores[0][i]) for i in similar_songs_indices]
     return similar_songs
 
 if __name__ == "__main__":
-    input_song_name = "Despacito"
+    input_song_name = input("Enter a song name (examples: Despacito, Happy, Gangnam Style): ")
     similar_songs = find_similar_songs(input_song_name, spotify_data, scaler, features)
     print("Similar songs based on Cosine Similarity for:", input_song_name)
     for song in similar_songs:
